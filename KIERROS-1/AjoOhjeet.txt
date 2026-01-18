@@ -1,0 +1,6 @@
+To build the program, navigate to T1, T2, or T3 directory via terminal,
+and use this command:
+g++ main.cpp Life.cpp Utility.cpp -o GameOfLife
+
+Run it by using:
+.\GameOfLife.exe
