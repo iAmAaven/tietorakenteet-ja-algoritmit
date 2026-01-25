@@ -2,6 +2,25 @@
 #include <iostream>
 using namespace std;
 
+Life::Life(int rows, int cols)
+{
+    if (rows < 1)
+        rows = 1;
+    if (cols < 1)
+        cols = 1;
+    if (rows > MAXROW)
+        rows = MAXROW;
+    if (cols > MAXCOL)
+        cols = MAXCOL;
+
+    maxrow = rows;
+    maxcol = cols;
+
+    for (int r = 0; r < MAXROW; r++)
+        for (int c = 0; c < MAXCOL; c++)
+            grid[r][c] = 0;
+}
+
 int Life::neighbor_count(int row, int col)
 /*
 Pre:  The Life object contains a configuration, and the coordinates
@@ -9,12 +28,18 @@ Pre:  The Life object contains a configuration, and the coordinates
 Post: The number of living neighbors of the specified cell is returned.
 */
 {
-    int i, j;
     int count = 0;
-    for (i = row - 1; i <= row + 1; i++)
-        for (j = col - 1; j <= col + 1; j++)
-            count += grid[i][j]; //  Increase the count if neighbor is alive.
-    count -= grid[row][col];     //  Reduce count, since cell is not its own neighbor.
+
+    int row_lower = (row == 0) ? row : row - 1;
+    int row_upper = (row == maxrow - 1) ? row : row + 1;
+    int col_lower = (col == 0) ? col : col - 1;
+    int col_upper = (col == maxcol - 1) ? col : col + 1;
+
+    for (int i = row_lower; i <= row_upper; i++)
+        for (int j = col_lower; j <= col_upper; j++)
+            count += grid[i][j];
+
+    count -= grid[row][col];
     return count;
 }
 
@@ -25,10 +50,10 @@ Post: The Life object contains the next generation of configuration.
 */
 {
     int row, col;
-    int new_grid[maxrow + 2][maxcol + 2];
+    int new_grid[MAXROW][MAXCOL];
 
-    for (row = 1; row <= maxrow; row++)
-        for (col = 1; col <= maxcol; col++)
+    for (row = 0; row < maxrow; row++)
+        for (col = 0; col < maxcol; col++)
             switch (neighbor_count(row, col))
             {
             case 2:
@@ -41,12 +66,12 @@ Post: The Life object contains the next generation of configuration.
                 new_grid[row][col] = 0; //  Cell is now dead.
             }
 
-    for (row = 1; row <= maxrow; row++)
-        for (col = 1; col <= maxcol; col++)
+    for (row = 0; row < maxrow; row++)
+        for (col = 0; col < maxcol; col++)
             grid[row][col] = new_grid[row][col];
 }
 
-void instructions()
+void Life::instructions()
 /*
 Pre:  None.
 Post: Instructions for using the Life program have been printed.
@@ -66,27 +91,28 @@ void Life::initialize()
 Pre:  None.
 Post: The Life object contains a configuration specified by the user.
 */
+
 {
-    instructions();
-
     int row, col;
-    for (row = 0; row <= maxrow + 1; row++)
-        for (col = 0; col <= maxcol + 1; col++)
+    for (row = 0; row < MAXROW; row++)
+        for (col = 0; col < MAXCOL; col++)
             grid[row][col] = 0;
-    cout << "List the coordinates for living cells." << endl;
-    cout << "Terminate the list with the special pair -1 -1" << endl;
-    cin >> row >> col;
-
-    while (row != -1 || col != -1)
+    cout << "Enter the initial configuration as " << maxrow << " lines of " << maxcol << " characters (x for alive, blank for dead):" << endl;
+    string line;
+    for (row = 0; row < maxrow; row++)
     {
-        if (row >= 1 && row <= maxrow)
-            if (col >= 1 && col <= maxcol)
+        getline(cin, line);
+        while (line.empty())
+            getline(cin, line);
+        for (col = 0; col < maxcol && col < (int)line.length(); col++)
+        {
+            if (line[col] == 'x' || line[col] == 'X')
                 grid[row][col] = 1;
             else
-                cout << "Column " << col << " is out of range." << endl;
-        else
-            cout << "Row " << row << " is out of range." << endl;
-        cin >> row >> col;
+                grid[row][col] = 0;
+        }
+        for (; col < maxcol; col++)
+            grid[row][col] = 0;
     }
 }
 
@@ -99,9 +125,9 @@ Post: The configuration is written for the user.
 {
     int row, col;
     cout << "\nThe current Life configuration is:" << endl;
-    for (row = 1; row <= maxrow; row++)
+    for (row = 0; row < maxrow; row++)
     {
-        for (col = 1; col <= maxcol; col++)
+        for (col = 0; col < maxcol; col++)
             if (grid[row][col] == 1)
                 cout << '*';
             else

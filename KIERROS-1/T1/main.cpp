@@ -14,7 +14,6 @@ Uses: The class Life and its methods initialize(), print(), and update().
 */
 {
       Life configuration;
-      configuration.instructions();
       configuration.initialize();
       configuration.print();
       cout << "Continue viewing new generations? " << endl;

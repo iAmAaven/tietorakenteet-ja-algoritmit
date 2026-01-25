@@ -6,7 +6,6 @@ class Life
 {
 public:
     void initialize();
-    void instructions();
     void print();
     void update();
 
