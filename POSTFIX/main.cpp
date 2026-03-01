@@ -233,7 +233,6 @@ Uses: The class Stack and the functions
             istringstream iss(line);
             string token;
             double value;
-            bool valid = false;
             while (iss >> token)
             {
                 try
@@ -244,7 +243,6 @@ Uses: The class Stack and the functions
                     {
                         if (stored_numbers.push(value) == overflow)
                             cout << "Warning: Stack full, lost number" << endl;
-                        valid = true;
                         continue;
                     }
                 }
@@ -254,28 +252,13 @@ Uses: The class Stack and the functions
 
                 char c = token[0];
                 if (token.size() == 1 &&
-                    (c == '=' || c == '+' || c == '-' || c == '*' || c == '/' ||
-                     c == '%' || c == '^' || c == 'v' || c == 'x' || c == 's' || c == 'a'))
+                    (c == '+' || c == '-' || c == '*' || c == '/' || c == '%' ||
+                     c == '^' || c == 'v' || c == 'x' || c == 's' || c == 'a'))
                 {
-                    if (c == '=')
-                    {
-                        double top_value;
-                        if (stored_numbers.top(top_value) == underflow)
-                            cout << "Stack empty" << endl;
-                        else
-                            cout << top_value << endl;
-                        valid = true;
-                    }
-                    else
-                    {
-                        do_command(c, stored_numbers);
-                        valid = true;
-                    }
+                    do_command(c, stored_numbers);
                 }
                 else if (token.size() == 1 && c == 'q')
-                {
-                    return 0;
-                }
+                    return EXIT_SUCCESS;
             }
             double top_value;
             if (stored_numbers.top(top_value) == underflow)
