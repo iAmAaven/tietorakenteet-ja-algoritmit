@@ -22,18 +22,19 @@ Post: Prints instructions for using the calculator.
     cout << "Commands:" << endl;
     cout << "  [?] Push a number to the stack" << endl;
     cout << "  [=] Print the top value of the stack" << endl;
-    cout << "  [+] [-] [*] [/] Perform arithmetic operations" << endl;
+    cout << "  [+] [-] [*] [/] [%] [^] Perform math operations" << endl;
+    cout << "  [v] Square root" << endl;
     cout << "  [x] Exchange the top two values" << endl;
     cout << "  [s] Sum all values in the stack" << endl;
     cout << "  [a] Average of all values in the stack" << endl;
-    cout << "  [Q] Quit the program" << endl;
+    cout << "  [q] Quit the program" << endl;
 }
 
 char get_command()
 {
     char command;
     bool waiting = true;
-    cout << "Select command and press <Enter>:";
+    cout << "Select command and press <Enter>: ";
 
     while (waiting)
     {
@@ -46,16 +47,14 @@ char get_command()
             waiting = false;
         else
         {
-            cout << "Please enter a valid command:" << endl
-                 << "[?]push to stack   [=]print top" << endl
-                 << "[+] [-] [*] [/]   are arithmetic operations" << endl
-                 << "[Q]uit." << endl;
+            instructions();
+            cout << "Please enter a valid command: ";
         }
     }
     return command;
 }
 
-void do_arithmetic_operation(char command, Stack &numbers, double &p, double &q)
+void do_math_operation(char command, Stack &numbers, double &p, double &q)
 {
     double result = 0;
     switch (command)
@@ -138,7 +137,7 @@ Uses: The class Stack.
                 numbers.push(p);
             }
             else
-                do_arithmetic_operation(c, numbers, p, q);
+                do_math_operation(c, numbers, p, q);
         }
     }
     else if (c == 'x')
