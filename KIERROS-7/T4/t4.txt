@@ -1,0 +1,4 @@
+
+push-toteutusta ei voi käyttää, koska "new_top" on paikallinen (stack-muistissa oleva) olio.
+Kun "push" palauttaa, "new_top" tuhoutuu ja "top_node" jäisi osoittamaan vapautuneeseen muistipaikkaan.
+Lisäksi luokassa "top_node" on tyyppiä "Node*", mutta "new_top" on "Node", joten sijoitus "top_node = new_top" ei ole oikein.

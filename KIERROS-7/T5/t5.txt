@@ -1,0 +1,39 @@
+T5
+
+(a) size-metodi linkitetylle pinolle:
+
+// node_stack.h (Stack-luokkaan):
+// int size() const;
+
+int Stack::size() const
+{
+    int count = 0;
+    for (Node* cur = top_node; cur != NULL; cur = cur->next)
+        ++count;
+    return count;
+}
+
+Idea: kuljetetaan osoitinta (cur) solmusta seuraavaan ja lasketaan, montako solmua löytyy ennen kuin tullaan NULL:iin.
+
+
+
+(b) Muutetaan pino rakenteeksi, jossa on kaksi jäsentä: top_node ja size_counter.
+
+Tarvittavat muutokset metodeihin:
+- Stack(): alustaa top_node = NULL ja size_counter = 0.
+- push(): jos lisäys onnistuu, size_counter++.
+- pop(): jos poisto onnistuu, size_counter--.
+- operator= ja copy constructor: kopioinnin jälkeen size_counter pitää vastata kopioidun pinon kokoa.
+- ~Stack(): jos tyhjennys tehdään pop():lla, laskuri pienenee oikein. Muuten pitää varmistaa että lopuksi size_counter = 0.
+- empty(): voi edelleen tarkistaa top_node == NULL, tai vaihtoehtoisesti size_counter == 0.
+
+Edut:
+- Koon hakeminen vie aina saman verran aikaa riippumatta pinon koosta, koska koko pidetään erillisessä laskurissa.
+- Joissain tilanteissa myös empty()-tarkistus voi olla yksinkertainen (size_counter == 0).
+
+Haitat:
+- Kaikkien muokkaavien operaatioiden (push/pop/tyhjennys/kopioinnit/sijoitus) täytyy ylläpitää laskuria oikein.
+- Laskuri vie hieman lisämuistia ja lisää ylläpitovaatimuksia, esim. top_node ja size_counter eivät saa olla ristiriidassa.
+
+Yhteenveto:
+- Laskuri tekee size()-kutsusta nopean, mutta kasvattaa toteutuksen ja ylläpidon virhealttiutta, koska jokaisen muutoksen pitää päivittää laskuri oikein.
