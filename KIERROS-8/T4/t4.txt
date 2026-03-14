@@ -1,0 +1,29 @@
+
+Jos linkitettyyn Extended_queue-luokkaan lisätään jäsenmuuttuja count,
+joka kertoo jonossa olevien alkioiden määrän, size-funktio voidaan toteuttaa
+vakioajassa palauttamalla count suoraan. Tämän takia kaikkia sellaisia metodeja on
+muutettava, jotka voivat muuttaa jonon kokoa.
+
+Seuraavat muutokset tarvitaan:
+
+- Konstruktoriin on lisättävä countin alustus arvoon 0.
+- Kopiokonstruktorin on kopioitava myös count oikein.
+- Sijoitusoperaattorin on päivitettävä count vastaamaan kopioitua jonoa.
+- append-metodin on kasvatettava countia yhdellä aina, kun lisäys onnistuu.
+- serve-metodin on pienennettävä countia yhdellä aina, kun poisto onnistuu.
+- clear-metodin on asetettava count lopuksi arvoon 0.
+- serve_and_retrieve-metodin on huolehdittava siitä, että count pienenee, jos alkiota poistetaan.
+- size-metodi voidaan toteuttaa palauttamalla count ilman silmukkaa.
+
+Tämän muutoksen etu on se, että size on nopeampi. Alkuperäisessä toteutuksessa size käy jonon
+kaikki alkiot läpi.
+
+Toisaalta muutoksessa on myös haittoja. Toteutuksesta tulee monimutkaisempi, koska count on
+muistettava päivittää jokaisessa metodissa, joka muuttaa jonon sisältöä. Jos jokin metodi
+unohtaa päivittää countin, count ei enää vastaa jonon todellista kokoa. Tällöin ohjelmaan voi
+tulla vaikeasti havaittavia virheitä. Lisäksi jonon koko on silloin tallennettu kahdella tavalla:
+linkitetyn rakenteen perusteella ja erillisessä count-muuttujassa.
+
+Yhteenvetona voidaan sanoa, että count-jäsenmuuttuja tekee size-metodista tehokkaamman, mutta
+samalla luokan toteutuksesta tulee herkempi virheille. Alkuperäinen toteutus on yksinkertaisempi
+ja varmempi, mutta size on hitaampi.
