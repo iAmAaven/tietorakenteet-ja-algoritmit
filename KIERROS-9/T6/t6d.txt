@@ -1,0 +1,3 @@
+gcd_search on yksinkertainen, mutta tehoton suurilla luvuilla.
+gcd_recursive (Eukleides) on tehokas, mutta voi kaatua rekursion syvyysrajaan hyvin suurilla luvuilla.
+gcd_iterative (Eukleides) on sekä tehokas että turvallinen kaikilla syötteillä (ei rekursion pinoa).
